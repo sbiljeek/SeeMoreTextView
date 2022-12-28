@@ -52,9 +52,9 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.seeMoreCaptionButtonGradientLayer.frame = self.seeMoreButton.bounds
-        let seeMoreCaptionButtonGradientColor = [UIColor.systemBackground.withAlphaComponent(0).cgColor, UIColor.systemBackground.cgColor]
-        self.seeMoreCaptionButtonGradientLayer.colors = seeMoreCaptionButtonGradientColor
+        self.seeMoreButtonGradientLayer.frame = self.seeMoreButton.bounds
+        let seeMoreButtonGradientColor = [UIColor.systemBackground.withAlphaComponent(0).cgColor, UIColor.systemBackground.cgColor]
+        self.seeMoreButtonGradientLayer.colors = seeMoreButtonGradientColor
         
         let isTextTruncated = self.textView.isTextTruncated
         self.seeMoreButton.isHidden = !isTextTruncated
@@ -87,7 +87,7 @@ class ViewController: UIViewController {
         return textView
     }()
     var textViewHeightConstraint: NSLayoutConstraint!
-    let seeMoreCaptionButtonGradientLayer: CAGradientLayer = {
+    let seeMoreButtonGradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
         gradientLayer.locations = [0.0, 0.4]
         let angle = (CGFloat.pi / 2) * 3
@@ -102,13 +102,13 @@ class ViewController: UIViewController {
         configuration.contentInsets = .init(top: 1, leading: 35, bottom: 1, trailing: 0.01)
         configuration.attributedTitle = AttributedString("more", attributes: container)
         let button = UIButton(configuration: configuration, primaryAction: nil)
-        button.addTarget(self, action: #selector(self.handleSeeMoreCaption), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.handleSeeMore), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.insertSublayer(self.seeMoreCaptionButtonGradientLayer, below: button.imageView?.layer)
+        button.layer.insertSublayer(self.seeMoreButtonGradientLayer, below: button.imageView?.layer)
         return button
     }()
     
-    @objc fileprivate func handleSeeMoreCaption() {
+    @objc fileprivate func handleSeeMore() {
         let contentSize = self.textView.sizeThatFits(self.textView.bounds.size)
         self.textViewHeightConstraint.constant = contentSize.height
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseOut) {
